@@ -1,6 +1,6 @@
-# Blockchain API
+# Cryptocurrency data service
 
-A REST API to get blockchain data
+An application to fetch cryptocurrency data through a REST API
 
 ## Running
 
