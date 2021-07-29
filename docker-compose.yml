@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+
+  cryptocurrency-data-service:
+    image: micheltank/cryptocurrency-data-service
+    container_name: cryptocurrency-data-service
+    env_file:
+      - env.example
+    ports:
+      - "8080:8080"

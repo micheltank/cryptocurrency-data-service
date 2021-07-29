@@ -1,0 +1,102 @@
+basePath: /api/v1
+definitions:
+  presenter.BlockResponse:
+    properties:
+      blockNumber:
+        description: The height of the block in the blockchain, or its number
+        type: integer
+      dateTime:
+        description: The time at which this block was mined by the miner
+        type: string
+      networkCode:
+        description: The acronym of the network
+        type: string
+      nextBlockhash:
+        description: The block hash of the next block in the blockchain. NextBlockhash=null
+          if this is the last block in the blockchain
+        type: string
+      previousBlockhash:
+        description: The block hash of the previous block in the blockchain
+        type: string
+      size:
+        description: The size of the block in bytes
+        type: integer
+      transactions:
+        description: The array of ids of all transactions in this block, starting
+          with the newly generated coins (only the first 10)
+        items:
+          $ref: '#/definitions/presenter.TransactionResponse'
+        type: array
+    type: object
+  presenter.TransactionResponse:
+    properties:
+      dateTime:
+        description: The time at which this transaction received by SoChain, or was
+          mined by the miner
+        type: string
+      fee:
+        description: The fee paid to the miner
+        type: number
+      sentValue:
+        description: The total value of all coins sent in this transaction
+        type: number
+      transactionId:
+        description: The transaction id
+        type: string
+    type: object
+info:
+  contact: {}
+  title: Blockchain API
+  version: "1.0"
+paths:
+  /blocks/{networkCode}/{hash}:
+    get:
+      description: Get a block along with the first ten transactions
+      operationId: get-block
+      parameters:
+      - description: The acronym of the network you're querying required
+        in: path
+        name: networkCode
+        required: true
+        type: string
+      - description: The blockhash or height (number) on the network you're querying
+        in: path
+        name: hash
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/presenter.BlockResponse'
+      summary: Get a block
+      tags:
+      - Blocks
+  /transactions/{networkCode}/{transactionId}:
+    get:
+      description: Get a transaction
+      operationId: get-transaction
+      parameters:
+      - description: The acronym of the network you're querying required
+        in: path
+        name: networkCode
+        required: true
+        type: string
+      - description: The transaction hash (id) on the network you're querying
+        in: path
+        name: transactionId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/presenter.TransactionResponse'
+      summary: Get a transaction
+      tags:
+      - Transactions
+swagger: "2.0"
